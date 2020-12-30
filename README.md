@@ -1,4 +1,4 @@
-# aoe2dualcivs.github.io
+# https://grandyb.github.io/aoe2dualcivs/
 Very simple site to stack two players' civs on a single webpage, utilising aoe2techtree.net.
 Created with casters in mind; especially when combined with a spreadsheet to generate the URL, could be used to quickly compare civs outside of the game, and be easily referencable.
 
@@ -11,10 +11,10 @@ Add parameters to the page URL to setup the comparison:
 - **arrangement** - optional parameter for layout that defaults to `top-bottom`, but can also be `left-right`, depending on what layout you want
 
 e.g.
-- https://aoe2dualcivs.github.io/?p1Name=Sally&p2Name=Jim&p1Color=Blue&p2Color=Pink&p1Civ=Britons&p2Civ=Ethiopians
-- https://aoe2dualcivs.github.io/?p1Civ=Aztecs&p2Civ=Mayans
-- https://aoe2dualcivs.github.io/ (defaults to Aztecs for both, as per aoe2techtree.net's default)
-- https://aoe2dualcivs.github.io/?p1Name=Sally&p2Name=Jim&p1Color=Blue&p2Color=Pink&p1Civ=Britons&strict (shows error in p2's slot as it's missing `p2Civ`)
+- https://grandyb.github.io/aoe2dualcivs/?p1Name=Sally&p2Name=Jim&p1Color=Blue&p2Color=Pink&p1Civ=Britons&p2Civ=Ethiopians
+- https://grandyb.github.io/aoe2dualcivs/?p1Civ=Aztecs&p2Civ=Mayans
+- https://grandyb.github.io/aoe2dualcivs/ (defaults to Aztecs for both, as per aoe2techtree.net's default)
+- https://grandyb.github.io/aoe2dualcivs/?p1Name=Sally&p2Name=Jim&p1Color=Blue&p2Color=Pink&p1Civ=Britons&strict (shows error in p2's slot as it's missing `p2Civ`)
 
 ## Combining with Google Sheets [optional]
 Makes it easier to generate/manipulate URLs, especially if already using Sheets to power the broadcast data too.
@@ -33,6 +33,6 @@ For each civ (C1, C2), much the same:
 
 Then you want a separate cell that combines the output of these cells, into a clickable URL.
 
-`=CONCATENATE("https://aoe2dualcivs.github.io/?p1Civ=", B1, "&p2Civ=", B2, "&p1Name=", SUBSTITUTE(A1, " ", "%20"), "&p2Name=", SUBSTITUTE(A2, " ", "%20"), "&p1Color=", B1, "&p2Color=", B2)`
+`=CONCATENATE("https://grandyb.github.io/aoe2dualcivs/?p1Civ=", B1, "&p2Civ=", B2, "&p1Name=", SUBSTITUTE(A1, " ", "%20"), "&p2Name=", SUBSTITUTE(A2, " ", "%20"), "&p1Color=", B1, "&p2Color=", B2)`
 
 This cell should then have a link to the two civs and their names/colours displayed; a nice quick version should you want the player names/colours easily, and/or are using spreadsheets as part of your broadcast already. Grandy uses [SheetsIO](https://github.com/GrandyB/SheetsIO) to populate OBS text/image elements with values from Google Sheets for example.
