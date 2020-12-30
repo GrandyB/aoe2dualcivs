@@ -1,0 +1,118 @@
+<!--
+Copyright 2020 - Mark "Grandy" Bishop (Grandy#0243)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+USAGE:
+Add parameters to the page URL to setup the comparison:
+
+'p1Civ' and 'p2Civ' correspond to the civ name that the 'https://aoe2techtree.net/#CivNameHere' URL uses in the relevant iframe.
+'p1Name', 'p1Color', 'p2Name', 'p2Color' are all optional but will display in a fixed position on top of each tree.
+'strict' forces p1Civ and p2Civ to be required.
+'arrangement' is an optional parameter for layout that defaults to 'top-bottom', but can also be 'left-right', depending on what layout you want.
+
+e.g.
+https://aoe2dualcivs.github.io/?p1Name=Sally&p2Name=Jim&p1Color=Blue&p2Color=Pink&p1Civ=Britons&p2Civ=Ethiopians
+-->
+<html>
+	<head>
+		<title>AoE2 Dual Civ Trees</title>
+
+		<!-- Common style parts. -->
+		<style>
+			body {
+				margin: 0;
+				padding: 0;
+				width: 100%;
+				height: 100%;
+			}
+			#p1, #p2, #p1Name, #p2Name {
+				position: absolute;
+				margin: 0;
+				padding: 0;
+			}
+			h1 {
+				color: #fff;
+				font-family: Barlow, Arial;
+				text-shadow: 3px 3px 3px #000;
+			}
+		</style>
+
+		<script type="text/javascript">
+			const TECH_TREE_URL = "https://aoe2techtree.net/#";
+			/** load: called on the <body> tag's onload is triggered. */
+			function load() {
+				const queryString = window.location.search;
+				const urlParams = new URLSearchParams(queryString);
+
+				let strict = urlParams.has('strict');
+
+				let arrangement = fromParam(urlParams, 'arrangement', 'top-bottom');
+				loadCss(arrangement);
+
+				let p1Frame = document.getElementById("p1");
+				let p2Frame = document.getElementById("p2");
+
+				let p1Civ = fromParam(urlParams, 'p1Civ');
+				let p2Civ = fromParam(urlParams, 'p2Civ');
+
+				// Set the iframes
+				p1Frame.src = TECH_TREE_URL + p1Civ;
+				p2Frame.src = TECH_TREE_URL + p2Civ;
+
+				// Handle p1Civ, p2Civ with error handling (if 'strict')
+				if (!p1Civ && strict) {
+					errorFrame(p1Frame, "p1Civ not provided");
+				}
+				if (!p2Civ && strict) {
+					errorFrame(p2Frame, "p2Civ not provided");
+				}
+
+				let p1Name = fromParam(urlParams, 'p1Name');
+				let p2Name = fromParam(urlParams, 'p2Name');
+				let p1Color = fromParam(urlParams, 'p1Color');
+				let p2Color = fromParam(urlParams, 'p2Color');
+
+				let p1Header = document.getElementById("p1Name");
+				let p2Header = document.getElementById("p2Name");
+				p1Header.innerHTML = (p1Color ? '(' + p1Color + ') ' : '') + p1Name;
+				p2Header.innerHTML = (p2Color ? '(' + p2Color + ') ' : '') + p2Name;
+			}
+
+			/** @return {string} The value from the param, or the fallback (default '', or provided). */
+			function fromParam(urlParams, param, fallback = '') {
+				let res = urlParams.get(param);
+				return res ? res : fallback;
+			}
+
+			/** Load a CSS file based on the provided arrangement. */
+			function loadCss(arrangement) {
+				var head = document.getElementsByTagName('head')[0];
+				var link = document.createElement('link');
+				//link.id = cssId;
+				link.rel = 'stylesheet';
+				link.type = 'text/css';
+				link.href = './' + arrangement + '.css';
+				link.media = 'all';
+				head.appendChild(link);
+			}
+
+			/** Adds a local html file into the iframe src with given error. */
+			function errorFrame(frame, msg) {
+				frame.src = "error.html?error=" + msg;
+			}
+		</script>
+	</head>
+
+	<body onload="load()">
+		<h1 id="p1Name"></h1>
+		<h1 id="p2Name"></h1>
+		<iframe id="p1" frameBorder="0"></iframe>
+		<iframe id="p2" frameBorder="0"></iframe>
+	</body>
+
+</html>

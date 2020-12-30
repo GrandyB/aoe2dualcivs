@@ -1,0 +1,22 @@
+#p1 {
+	top: 0;
+	left: 0;
+	width: 50%;
+	height: 100%;
+}
+#p2 {
+	top: 0;
+	left: 50%;
+	width: 50%;
+	height: 100%;
+}
+#p1Name, #p2Name {
+	top: 10px;
+	z-index: 2;
+}
+#p1Name {
+	left: 350px;
+}
+#p2Name {
+	left: calc(50% + 350px);
+}
